@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 # deklaracja statycznej listy wyboru do wykorzystania w klasie modelu
@@ -23,16 +24,16 @@ class Team(models.Model):
         verbose_name_plural = "Teams"
 
 
-class Person(models.Model):
-
-    name = models.CharField(max_length=60)
-    shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES, default=SHIRT_SIZES[0][0])
-    datetime_added = models.DateField(auto_now_add=True)
-    # datetime_added = models.DateField(choices=MONTHS.choices, default=MONTHS.choices[0][0])
-    team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL)
-
-    def __str__(self):
-        return f"{self.name} ({self.shirt_size})"
+# class Person(models.Model):
+#
+#     name = models.CharField(max_length=60)
+#     shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES, default=SHIRT_SIZES[0][0])
+#     datetime_added = models.DateField(auto_now_add=True)
+#     # datetime_added = models.DateField(choices=MONTHS.choices, default=MONTHS.choices[0][0])
+#     team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL)
+#
+#     def __str__(self):
+#         return f"{self.name} ({self.shirt_size})"
 
 
 
@@ -64,6 +65,10 @@ class Osoba(models.Model):
     plec = models.IntegerField(choices=Plec.choices)
     stanowisko = models.ForeignKey(Stanowisko, on_delete=models.CASCADE)
     data_dodania = models.DateField(auto_now_add=True, editable=False)
+    team = models.ForeignKey(Team, null=True, blank=True, on_delete=models.SET_NULL)
+    wlasciciel = models.ForeignKey(User, on_delete=models.CASCADE, related_name='osoby')
+    # shirt_size = models.CharField(max_length=1, choices=SHIRT_SIZES, default=SHIRT_SIZES[0][0])
+    # datetime_added = models.DateField(auto_now_add=True)
     # data_dodania = models.DateField(default=timezone.now)
 
 

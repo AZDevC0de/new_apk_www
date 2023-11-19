@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Person,Team, SHIRT_SIZES,MONTHS
+from .models import Team, SHIRT_SIZES,MONTHS
 from django.utils import timezone
 from .models import Osoba,Stanowisko
 
@@ -7,15 +7,11 @@ class StanowiskoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Stanowisko
         fields = '__all__'
-class PersonSerializer(serializers.Serializer):
-    id = serializers.IntegerField(read_only=True)
-    name = serializers.CharField(max_length=60)
-    shirt_size = serializers.ChoiceField(choices=SHIRT_SIZES, default=SHIRT_SIZES[0][0])
-    month_added = serializers.ChoiceField(choices=MONTHS.choices, default=MONTHS.choices[0][0])
-    team = serializers.PrimaryKeyRelatedField(queryset=Team.objects.all(), allow_null=True, required=False)
+
+
 
     def create(self, validated_data):
-        return Person.objects.create(**validated_data)
+        return Osoba.objects.create(**validated_data)
 
 
     def update(self, instance, validated_data):
@@ -37,10 +33,17 @@ class TeamSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class OsobaSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(read_only=True)
+    imie = serializers.CharField(max_length=60)
+    # shirt_size = serializers.ChoiceField(choices=SHIRT_SIZES, default=SHIRT_SIZES[0][0])
 
     class Meta:
         model = Osoba
-        fields = ['imie', 'nazwisko', 'plec', 'stanowisko', 'data_dodania']
+        fields = ['id','imie', 'nazwisko', 'plec', 'stanowisko', 'data_dodania', 'team', 'wlasciciel']
+        extra_kwargs = {
+            'wlasciciel': {'read_only': True}
+        }
+
 
 
 

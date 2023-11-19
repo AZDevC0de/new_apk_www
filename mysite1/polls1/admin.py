@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Osoba, Person
+from .models import Osoba
 from .models import Stanowisko
 
 # Register your models here.
@@ -13,9 +13,20 @@ from .models import Stanowisko
 @admin.register(Osoba)
 class OsobaData(admin.ModelAdmin):
     readonly_fields = ('data_dodania',)
-    list_filter = ('plec', 'stanowisko','data_dodania')
-    search_fields = ['imie', 'nazwisko']
-    list_display = ['imie', 'nazwisko', 'plec', 'stanowisko', 'data_dodania']
+    list_filter = ('plec', 'stanowisko','data_dodania','wlasciciel')
+    search_fields = ['imie', 'nazwisko','wlasciciel__username']
+    list_display = ['imie', 'nazwisko', 'plec', 'stanowisko', 'data_dodania','wlasciciel']
+
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs  # Superużytkownik może zobaczyć wszystkie rekordy
+        return qs.filter(wlasciciel=request.user)  # Inni użytkownicy widzą tylko swoje rekordy
+
+    def save_model(self, request, obj, form, change):
+        if not obj.pk and not hasattr(obj, 'wlasciciel'):
+            obj.wlasciciel = request.user
+        super().save_model(request, obj, form, change)
 
     @admin.display(description='Stanowisko (id)')
     def display_stanowisko(self, obj):
@@ -45,5 +56,5 @@ class StanowiskoAdmin(admin.ModelAdmin):
 
 
 # ten obiekt też trzeba zarejestrować w module admin
-admin.site.register(Person, PersonAdmin)
+# admin.site.register(Person, PersonAdmin)
 admin.site.register(Stanowisko, StanowiskoAdmin)
