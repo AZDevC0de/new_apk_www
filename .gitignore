@@ -8,7 +8,7 @@ media
 
 # Backup files #
 *.bak
-
+*.sqlite3
 # If you are using PyCharm #
 # User-specific stuff
 .idea/**/workspace.xml
