@@ -72,12 +72,18 @@ class Osoba(models.Model):
     # data_dodania = models.DateField(default=timezone.now)
 
 
+    class Meta:
+        permissions = [
+            ('view_other_osoba', 'Wyświetl  osoby, których się nie dodało'),
+
+        ]
+        verbose_name_plural = "Osoby"
+        ordering = ["nazwisko"]
+
 
     def __str__(self):
 
         return f"{self.imie} {self.nazwisko}"
 
-    class Meta:
-        verbose_name_plural = "Osoby"
-        ordering = ["nazwisko"]
+
 

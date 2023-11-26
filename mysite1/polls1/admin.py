@@ -17,11 +17,17 @@ class OsobaData(admin.ModelAdmin):
     search_fields = ['imie', 'nazwisko','wlasciciel__username']
     list_display = ['imie', 'nazwisko', 'plec', 'stanowisko', 'data_dodania','wlasciciel']
 
+    # def get_queryset(self, request):
+    #     qs = super().get_queryset(request)
+    #     if request.user.is_superuser or request.user.has_perm('polls1.view_all_osoby'):
+    #         return qs  # Superużytkownik lub użytkownik z odpowiednim uprawnieniem może zobaczyć wszystkie rekordy
+    #     return qs.filter(wlasciciel=request.user)  # Inni użytkownicy widzą tylko swoje rekordy
+
     def get_queryset(self, request):
         qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs  # Superużytkownik może zobaczyć wszystkie rekordy
-        return qs.filter(wlasciciel=request.user)  # Inni użytkownicy widzą tylko swoje rekordy
+        if request.user.is_superuser or request.user.has_perm('polls1.view_osoba'):
+            return qs
+        return qs
 
     def save_model(self, request, obj, form, change):
         if not obj.pk and not hasattr(obj, 'wlasciciel'):
