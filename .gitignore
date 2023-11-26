@@ -6,7 +6,7 @@ __pycache__
 db.sqlite3
 media
 
-# Backup files #
+# Backup files ##
 *.bak
 /mysite1/db.*
 # If you are using PyCharm #
