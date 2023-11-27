@@ -124,7 +124,7 @@ def osoba_update(request, pk):
         serializer.save()
         return Response(serializer.data)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+#do zadania lab7
 class OsobaDelete(APIView):
     permission_classes = (IsAuthenticated, DjangoModelPermissions,)
     def delete(self,request, pk):
