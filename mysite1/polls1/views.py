@@ -59,7 +59,7 @@ def view_person_view(request, pk):
 
     raise PermissionDenied()
 @api_view(['GET', 'POST'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
+# @authentication_classes([BasicAuthentication])
 @permission_classes([IsAuthenticated])
 def osoba_list(request):
     if request.method == 'GET':
