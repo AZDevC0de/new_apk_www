@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework.authtoken.views import obtain_auth_token
+from graphene_django.views import GraphQLView
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
 
@@ -25,4 +27,5 @@ urlpatterns = [
     path('api-token-auth/', obtain_auth_token),
     path("__debug__/", include("debug_toolbar.urls")),
     path('polls1/', include('polls1.urls')),
+    path('graphql', csrf_exempt(GraphQLView.as_view(graphiql=True))),
 ]

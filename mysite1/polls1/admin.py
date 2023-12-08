@@ -1,7 +1,9 @@
 from django.contrib import admin
 from .models import Osoba
-from .models import Stanowisko
+from .models import Stanowisko,Team
 
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ('name', 'country')
 # Register your models here.
 # admin.site.register(Osoba)
 # admin.site.register(Stanowisko)
@@ -64,3 +66,5 @@ class StanowiskoAdmin(admin.ModelAdmin):
 # ten obiekt też trzeba zarejestrować w module admin
 # admin.site.register(Person, PersonAdmin)
 admin.site.register(Stanowisko, StanowiskoAdmin)
+
+admin.site.register(Team, TeamAdmin)
