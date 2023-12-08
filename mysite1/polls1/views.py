@@ -60,6 +60,7 @@ def view_person_view(request, pk):
     raise PermissionDenied()
 @api_view(['GET', 'POST'])
 # @authentication_classes([BasicAuthentication])
+@authentication_classes([TokenAuthentication])
 @permission_classes([IsAuthenticated])
 def osoba_list(request):
     if request.method == 'GET':
@@ -76,7 +77,8 @@ def osoba_list(request):
 
 
 @api_view(['GET'])
-
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def osoba_detail(request, pk):
     """
     Pobiera konkretny obiekt Osoba.
@@ -90,9 +92,9 @@ def osoba_detail(request, pk):
     return Response(serializer.data)
 
 
-@api_view(['PUT', 'DELETE'])
-@authentication_classes([SessionAuthentication, BasicAuthentication])
-@permission_classes([IsAuthenticated])
+# @api_view(['PUT', 'DELETE'])
+# @authentication_classes([SessionAuthentication, BasicAuthentication])
+# @permission_classes([IsAuthenticated])
 # def osoba_update_delete(request, pk):
 #     """
 #
@@ -113,6 +115,8 @@ def osoba_detail(request, pk):
 #         osoba.delete()
 #         return Response(status=status.HTTP_204_NO_CONTENT)
 @api_view(['PUT'])
+@authentication_classes([TokenAuthentication])
+@permission_classes([IsAuthenticated])
 def osoba_update(request, pk):
     try:
         osoba = Osoba.objects.get(pk=pk)
@@ -126,7 +130,9 @@ def osoba_update(request, pk):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 #do zadania lab7
 class OsobaDelete(APIView):
-    permission_classes = (IsAuthenticated, DjangoModelPermissions,)
+    authentication_classes = [TokenAuthentication]
+    permission_classes = [IsAuthenticated]
+    # permission_classes = (IsAuthenticated, DjangoModelPermissions,)
     def delete(self,request, pk):
         try:
             get_object_or_404(Osoba, pk=pk).delete()
